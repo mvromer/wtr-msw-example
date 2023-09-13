@@ -2,13 +2,15 @@
 
 The following show three back-to-back-to-back runs of WTR that perform tests for the
 `my-task-element` component. The outputs here are analogous to the outputs for the `my-element`
-tests described in [./inconsistent-test-results.md].
+tests described in [inconsistent-test-results.md](./inconsistent-test-results.md).
 
 Similar to the `my-element` tests, there are two tests for `my-task-element`. The first one in
 my-task-element.incorrect.test.ts does not properly wait for the component to loads its data before
 asserting that the data is properly rendered. The second test in my-task-element.workaround.test.ts
 uses the same custom WTR command to tell Playwright to wait for a network load status before
 asserting the component's rendered output.
+
+Note that coverage output was disabled in these runs.
 
 ## Result outputs
 

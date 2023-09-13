@@ -1,7 +1,7 @@
-import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import litLogo from './assets/lit.svg'
-import viteLogo from '/vite.svg'
+import { LitElement, PropertyValues, css, html } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import litLogo from "./assets/lit.svg";
+import viteLogo from "/vite.svg";
 
 /**
  * An example element.
@@ -9,21 +9,43 @@ import viteLogo from '/vite.svg'
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement('my-element')
+@customElement("my-element")
 export class MyElement extends LitElement {
   /**
    * Copy for the read the docs hint.
    */
   @property()
-  docsHint = 'Click on the Vite and Lit logos to learn more'
+  public docsHint = "Click on the Vite and Lit logos to learn more";
 
   /**
    * The number of times the button has been clicked.
    */
   @property({ type: Number })
-  count = 0
+  public count = 0;
 
-  render() {
+  @property({ type: Number })
+  public userId = 1;
+
+  @state()
+  private _user?: Record<string, any> = undefined;
+
+  protected override async willUpdate(
+    _changedProperties: PropertyValues<this>
+  ) {
+    console.log("starting willUpdate");
+    if (_changedProperties.has("userId")) {
+      console.log(`fetching user ${this.userId}`);
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users/1"
+      );
+      this._user = await response.json();
+      console.log(`fetched user ${this.userId}`);
+    }
+    console.log("ending willUpdate");
+  }
+
+  protected override render() {
+    console.log("rendering");
     return html`
       <div>
         <a href="https://vitejs.dev" target="_blank">
@@ -39,12 +61,18 @@ export class MyElement extends LitElement {
           count is ${this.count}
         </button>
       </div>
+      <dl>
+        <dt>ID</dt>
+        <dd>${this._user?.id}</dd>
+        <dt>Name</dt>
+        <dd>${this._user?.name}</dd>
+      </dl>
       <p class="read-the-docs">${this.docsHint}</p>
-    `
+    `;
   }
 
   private _onClick() {
-    this.count++
+    this.count++;
   }
 
   static styles = css`
@@ -79,6 +107,14 @@ export class MyElement extends LitElement {
     ::slotted(h1) {
       font-size: 3.2em;
       line-height: 1.1;
+    }
+
+    dl {
+      text-align: left;
+    }
+
+    dt {
+      font-weight: 500;
     }
 
     a {
@@ -117,11 +153,11 @@ export class MyElement extends LitElement {
         background-color: #f9f9f9;
       }
     }
-  `
+  `;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-element': MyElement
+    "my-element": MyElement;
   }
 }

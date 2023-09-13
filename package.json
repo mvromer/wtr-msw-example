@@ -6,14 +6,23 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "wtr"
   },
   "dependencies": {
     "@lit-labs/task": "^3.0.2",
     "lit": "^2.7.6"
   },
   "devDependencies": {
+    "@open-wc/testing": "^3.2.0",
+    "@web/test-runner": "^0.17.1",
+    "@web/test-runner-junit-reporter": "^0.6.1",
+    "@web/test-runner-playwright": "^0.10.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "wds-use-vite": "^0.2.1"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

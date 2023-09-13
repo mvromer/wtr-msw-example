@@ -1,5 +1,6 @@
 import { LitElement, PropertyValues, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { Task, TaskStatus } from "@lit-labs/task";
 import litLogo from "./assets/lit.svg";
 import viteLogo from "/vite.svg";
 
@@ -9,8 +10,8 @@ import viteLogo from "/vite.svg";
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement("my-element")
-export class MyElement extends LitElement {
+@customElement("my-task-element")
+export class MyTaskElement extends LitElement {
   /**
    * Copy for the read the docs hint.
    */
@@ -26,26 +27,28 @@ export class MyElement extends LitElement {
   @property({ type: Number, attribute: "user-id" })
   public userId = 1;
 
-  @state()
-  private _user?: Record<string, any> = undefined;
+  private _apiTask = new Task(
+    this,
+    async ([userId]) => {
+      console.log(`[my-task-element] fetching user ${userId}`);
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/users/${userId}`
+      );
+      console.log(`[my-task-element] fetched user ${userId}`);
+      return await response.json();
+    },
+    () => [this.userId]
+  );
 
   protected override async willUpdate(
     _changedProperties: PropertyValues<this>
   ) {
-    console.log("[my-element] starting willUpdate");
-    if (_changedProperties.has("userId")) {
-      console.log(`[my-element] fetching user ${this.userId}`);
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${this.userId}`
-      );
-      this._user = await response.json();
-      console.log(`[my-element] fetched user ${this.userId}`);
-    }
-    console.log("[my-element] ending willUpdate");
+    console.log("[my-task-element] starting willUpdate");
+    console.log("[my-task-element] ending willUpdate");
   }
 
   protected override render() {
-    console.log("[my-element] rendering");
+    console.log("[my-task-element] rendering");
     return html`
       <div>
         <a href="https://vitejs.dev" target="_blank">
@@ -61,12 +64,16 @@ export class MyElement extends LitElement {
           count is ${this.count}
         </button>
       </div>
-      <dl>
-        <dt>ID</dt>
-        <dd>${this._user?.id}</dd>
-        <dt>Name</dt>
-        <dd>${this._user?.name}</dd>
-      </dl>
+      ${this._apiTask.render({
+        complete: (user) => html`
+          <dl>
+            <dt>ID</dt>
+            <dd>${user?.id}</dd>
+            <dt>Name</dt>
+            <dd>${user?.name}</dd>
+          </dl>
+        `,
+      })}
       <p class="read-the-docs">${this.docsHint}</p>
     `;
   }
@@ -158,6 +165,6 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "my-element": MyElement;
+    "my-task-element": MyTaskElement;
   }
 }

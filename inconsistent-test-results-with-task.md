@@ -1,3 +1,6 @@
+> **NOTE:** This is no longer relevant. The solution was a fix applied in 0.3.0 of the wds-use-vite
+> plugin this example uses for integrating Vite middleware into the WTR server request pipeline.
+
 # Inconsistent Test Results
 
 The following show three back-to-back-to-back runs of WTR that perform tests for the

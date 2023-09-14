@@ -1,6 +1,6 @@
 import { expect, fixture, html } from '@open-wc/testing';
 
-import { waitForNetworkIdle } from './commands/wait-for-network-idle.js';
+import { waitForNetworkIdle } from 'wtr-playwright-commands';
 
 import type { MyTaskElement } from '../src/my-task-element.js';
 

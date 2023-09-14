@@ -20,7 +20,8 @@
     "@web/test-runner-playwright": "^0.10.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "wds-use-vite": "^0.3.0"
+    "wds-use-vite": "^0.3.0",
+    "wtr-playwright-commands": "^0.1.1"
   },
   "prettier": {
     "singleQuote": true

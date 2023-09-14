@@ -1,8 +1,8 @@
-import { waitForNetworkIdleCommand } from './test/commands/wait-for-network-idle-command.js';
 import { addVite, useVite } from 'wds-use-vite';
 import { defaultReporter } from '@web/test-runner';
 import { junitReporter } from '@web/test-runner-junit-reporter';
 import { playwrightLauncher } from '@web/test-runner-playwright';
+import { waitForNetworkIdlePlugin } from 'wtr-playwright-commands/plugin.js';
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const config = {
@@ -21,7 +21,7 @@ const config = {
     // hackiness and brittleness. This example command below is somewhere in the middle. It assumes
     // you are using Playwright as your page launcher for your tests. It allows a test to wait for
     // Playwright to receive a network idle event before proceeding.
-    waitForNetworkIdleCommand(),
+    waitForNetworkIdlePlugin(),
   ],
   middleware: [useVite()],
   browsers: [playwrightLauncher({ product: 'chromium' })],
